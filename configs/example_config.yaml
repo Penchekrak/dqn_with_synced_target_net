@@ -1,0 +1,10 @@
+model:
+  _target_: models.SyncedTargetNetworkDQN
+  env: "Pong-v0"
+trainer:
+  accelerator: "cpu"
+log_video: True
+log_video_path: "video"
+logger:
+  project: "skoltech_ml_project"
+  entity: "penchekrak"

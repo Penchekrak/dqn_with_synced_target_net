@@ -1,0 +1,12 @@
+torch
+pytorch-lightning
+wandb
+lightning-bolts
+gym[atari,accept-rom-license]
+opencv-python
+numpy
+scipy
+pandas
+scikit-learn
+torchvision
+hydra-core

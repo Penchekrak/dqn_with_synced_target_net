@@ -1,6 +1,8 @@
 model:
   _target_: models.SyncedTargetNetworkDQN
   env: "Pong-v0"
+  network:
+    _target_: pl_bolts.models.rl.common.networks.CNN
 trainer:
   accelerator: "cpu"
 log_video: True

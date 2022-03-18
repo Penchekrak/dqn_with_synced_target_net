@@ -9,7 +9,7 @@ from callbacks import LogReplayVideoCallback
 
 @hydra.main(config_path='configs')
 def main(config: DictConfig):
-    model = instantiate(config['model'])
+    model = instantiate(config['model'], _recursive_=False)
     logger = WandbLogger(**config['logger'])
     if config['log_video']:
         callbacks = [LogReplayVideoCallback(config['log_video_path'])]

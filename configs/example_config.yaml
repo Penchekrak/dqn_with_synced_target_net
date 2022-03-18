@@ -8,5 +8,5 @@ trainer:
 log_video: True
 log_video_path: "video"
 logger:
-  project: "skoltech_ml_project"
-  entity: "penchekrak"
+  project: "project"
+  entity: "skoltech_ml2022_project_synced_target_nets"

@@ -5,10 +5,10 @@ import torch
 from hydra.utils import instantiate
 from omegaconf import OmegaConf
 from pl_bolts.losses.rl import dqn_loss
-from pl_bolts.models.rl import DQN as PLDQN
+from pl_bolts.models.rl import DQN as FixedNetworkPLDQN
 
 
-class SyncedTargetNetworkDQN(PLDQN):
+class PLDQN(FixedNetworkPLDQN):
     def __init__(
             self,
             env: str,
@@ -34,6 +34,12 @@ class SyncedTargetNetworkDQN(PLDQN):
                          replay_size, warm_start_size, avg_reward_len, min_episode_reward, seed, batches_per_epoch,
                          n_steps, **kwargs)
 
+    def build_networks(self) -> None:
+        self.net = instantiate(self.network, self.obs_shape, self.n_actions)
+        self.target_net = instantiate(self.network, self.obs_shape, self.n_actions)
+
+
+class SyncedTargetNetworkDQN(PLDQN):
     def build_networks(self) -> None:
         self.net = instantiate(self.network, self.obs_shape, self.n_actions)
         self.target_net = self.net

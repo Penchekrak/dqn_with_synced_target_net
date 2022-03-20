@@ -1,8 +1,8 @@
 torch
-pytorch-lightning
+pytorch-lightning==1.4.0
 wandb
 lightning-bolts
-gym[atari,accept-rom-license]
+gym[atari,accept-rom-license]==0.23.1
 opencv-python
 numpy
 scipy

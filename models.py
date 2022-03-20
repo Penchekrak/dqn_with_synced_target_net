@@ -6,6 +6,8 @@ from hydra.utils import instantiate
 from omegaconf import OmegaConf
 from pl_bolts.losses.rl import dqn_loss
 from pl_bolts.models.rl import DQN as FixedNetworkPLDQN
+from pl_bolts.models.rl.common.gym_wrappers import gym_make, MaxAndSkipEnv, FireResetEnv
+
 
 
 class PLDQN(FixedNetworkPLDQN):
@@ -37,6 +39,20 @@ class PLDQN(FixedNetworkPLDQN):
     def build_networks(self) -> None:
         self.net = instantiate(self.network, self.obs_shape, self.n_actions)
         self.target_net = instantiate(self.network, self.obs_shape, self.n_actions)
+
+
+class RAMPLDQN(PLDQN):
+    @staticmethod
+    def make_environment(env_name: str, seed=None):
+        env = gym_make(env_name)
+        env = MaxAndSkipEnv(env)
+        env = FireResetEnv(env)
+        env = ImageToPyTorch(env)
+        env = BufferWrapper(env, 4)
+        return ScaledFloatFrame(env)
+
+        if seed:
+            env.seed(seed)
 
 
 class SyncedTargetNetworkDQN(PLDQN):

@@ -1,3 +1,4 @@
+import gc
 from pathlib import Path
 
 import pytorch_lightning as pl
@@ -17,3 +18,12 @@ class LogReplayVideoCallback(Callback):
         video_paths = [s for s in Path(self.path).iterdir() if s.suffix == '.mp4']
         for path in video_paths:
             trainer.logger.experiment.log({'replay': wandb.Video(str(path))})
+
+
+class GC(Callback):
+    def __init__(self, clean_every_n_epochs: int = 1):
+        self.clean_every_n_epochs = clean_every_n_epochs
+
+    def on_train_epoch_end(self, trainer: "pl.Trainer", pl_module: DQN) -> None:
+        if trainer.current_epoch + 1 % self.clean_every_n_epochs == 0:
+            gc.collect()

@@ -5,7 +5,7 @@ model:
     _target_: networks.MediumCNN
 trainer:
   accelerator: "gpu"
-  gpus: '0'
+  gpus: [0,]
 log_video: True
 log_video_path: "video"
 logger:

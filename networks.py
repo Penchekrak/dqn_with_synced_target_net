@@ -1,7 +1,7 @@
-from abc import ABCMeta
+from functools import partial
 from typing import Tuple
 
-from pl_bolts.models.rl.common.networks import CNN as SmallCNN
+from pl_bolts.models.rl.common.networks import CNN as SmallCNN, MLP
 from torch import nn
 
 
@@ -30,8 +30,10 @@ class MediumCNN(SmallCNN):
             nn.Linear(conv_out_size, 512),
             nn.BatchNorm1d(512),
             nn.LeakyReLU(),
-            nn.Linear(512, 1024),
-            nn.BatchNorm1d(1024),
-            nn.LeakyReLU(),
-            nn.Linear(1024, n_actions)
+            nn.Linear(512, n_actions)
         )
+
+
+SmallMLP = partial(MLP, hidden_size=128)
+MediumMLP = partial(MLP, hidden_size=256)
+LargeMLP = partial(MLP, hidden_size=512)

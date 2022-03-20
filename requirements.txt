@@ -10,3 +10,4 @@ pandas
 scikit-learn
 torchvision
 hydra-core
+ale-py

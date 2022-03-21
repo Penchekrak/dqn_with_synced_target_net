@@ -1,5 +1,5 @@
 model:
-  _target_: pl_bolts.models.rl.DQN
+  _target_: models.RAMPLDQN
   env: "Pong-ram-v0"
 trainer:
   accelerator: "gpu"

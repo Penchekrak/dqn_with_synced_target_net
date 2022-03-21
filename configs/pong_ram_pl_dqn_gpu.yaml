@@ -1,0 +1,11 @@
+model:
+  _target_: pl_bolts.models.rl.DQN
+  env: "Pong-ram-v0"
+trainer:
+  accelerator: "gpu"
+  gpus: [0,]
+log_video: True
+log_video_path: "video"
+logger:
+  project: "project"
+  entity: "skoltech_ml2022_project_synced_target_nets"

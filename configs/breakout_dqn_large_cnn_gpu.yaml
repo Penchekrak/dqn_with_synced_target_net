@@ -1,0 +1,15 @@
+model:
+  _target_: models.SyncedTargetNetworkDQN
+  env: "Breakout-v0"
+  batch_size: 64
+  min_episode_reward: 0
+  network:
+    _target_: networks.LargeCNN
+trainer:
+  accelerator: "cpu"
+  # gpus: [0,]
+log_video: True
+log_video_path: "video"
+logger:
+  project: "project"
+  entity: "skoltech_ml2022_project_synced_target_nets"

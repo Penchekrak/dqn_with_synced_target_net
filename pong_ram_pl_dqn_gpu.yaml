@@ -1,0 +1,13 @@
+model:
+  _target_: models.RAMPLDQN
+  env: "Pong-ram-v0"
+  network:
+    _targer_: networks.SmallMLP
+trainer:
+  accelerator: "gpu"
+  gpus: [0,]
+log_video: True
+log_video_path: "video"
+logger:
+  project: "project"
+  entity: "skoltech_ml2022_project_synced_target_nets"

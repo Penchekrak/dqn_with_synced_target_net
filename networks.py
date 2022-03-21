@@ -28,7 +28,7 @@ class MediumCNN(SmallCNN):
         conv_out_size = self._get_conv_out(input_shape)
         self.head = nn.Sequential(
             nn.Linear(conv_out_size, 512),
-            nn.BatchNorm1d(512),
+            # nn.BatchNorm1d(512),
             nn.LeakyReLU(),
             nn.Linear(512, n_actions)
         )

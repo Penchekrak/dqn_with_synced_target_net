@@ -7,6 +7,7 @@ from omegaconf import OmegaConf
 from pl_bolts.losses.rl import dqn_loss
 from pl_bolts.models.rl import DQN as FixedNetworkPLDQN
 from pl_bolts.models.rl.common.gym_wrappers import gym_make, MaxAndSkipEnv, FireResetEnv
+from pl_bolts.models.rl.common.gym_wrappers import ImageToPyTorch, BufferWrapper, ScaledFloatFrame
 
 
 

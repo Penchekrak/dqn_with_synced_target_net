@@ -1,6 +1,8 @@
 model:
   _target_: models.RAMPLDQN
   env: "Pong-ram-v0"
+  netowrk:
+    _targer_: netowrks.SmallMLP
 trainer:
   accelerator: "gpu"
   gpus: [0,]

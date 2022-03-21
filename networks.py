@@ -3,7 +3,7 @@ from typing import Tuple
 
 from pl_bolts.models.rl.common.networks import CNN as SmallCNN, MLP
 from torch import nn
-
+from pl_bolts.models.rl.common.networks import DuelingCNN as SmallDuelingCNN
 
 class MediumCNN(SmallCNN):
     def __init__(self, input_shape: Tuple[int], n_actions: int):
@@ -70,4 +70,4 @@ class LargeCNN(SmallCNN):
 
 SmallMLP = partial(MLP, hidden_size=128)
 MediumMLP = partial(MLP, hidden_size=256)
-LargeMLP = partial(MLP, hidden_size=512)
+LargeMLP = partial(MLP, hidden_size=512)    

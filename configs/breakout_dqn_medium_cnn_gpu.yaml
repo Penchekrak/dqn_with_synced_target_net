@@ -1,6 +1,8 @@
 model:
-  _target_: models.PLDQN
+  _target_: models.SyncedTargetNetworkDQN
   env: "Breakout-v0"
+  batch_size: 64
+  min_episode_reward: 0
   network:
     _target_: networks.MediumCNN
 trainer:

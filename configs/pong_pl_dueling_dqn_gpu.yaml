@@ -1,8 +1,6 @@
 model:
   _target_: pl_bolts.models.rl.dueling_dqn_model.DuelingDQN
   env: "Pong-v0"
-  batch_size: 64
-  min_episode_reward: 0
 trainer:
   accelerator: "gpu"
   gpus: [0,]

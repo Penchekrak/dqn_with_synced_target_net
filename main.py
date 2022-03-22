@@ -13,7 +13,7 @@ def main(config: DictConfig):
     model = instantiate(config['model'], _recursive_=False)
     logger = WandbLogger(**config['logger'])
     logger.log_hyperparams(OmegaConf.to_container(config, resolve=True))
-    callbacks = [GC(config['gc_freq']), ModelCheckpoint(save_top_k=1, monitor="avg_reward", mode="max", verbose=True)]
+    callbacks = [GC(), ModelCheckpoint(save_top_k=1, monitor="avg_reward", mode="max", verbose=True)]
     if config['log_video']:
         callbacks.append(LogReplayVideoCallback(config['log_video_path']))
     trainer = Trainer(**config['trainer'], logger=logger, callbacks=callbacks)

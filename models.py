@@ -4,13 +4,15 @@ from collections import OrderedDict
 import torch
 from hydra.utils import instantiate
 from omegaconf import OmegaConf
+from pl_bolts.datamodules import ExperienceSourceDataset
 from pl_bolts.losses.rl import dqn_loss
 from pl_bolts.models.rl import DQN as FixedNetworkPLDQN
+from pl_bolts.models.rl.common.gym_wrappers import ImageToPyTorch, BufferWrapper, ScaledFloatFrame
+from pl_bolts.models.rl.common.gym_wrappers import gym_make, MaxAndSkipEnv, FireResetEnv
+from pl_bolts.models.rl.common.memory import MultiStepBuffer
 from pl_bolts.models.rl.double_dqn_model import DoubleDQN
 from pl_bolts.models.rl.dueling_dqn_model import DuelingDQN
-from pl_bolts.models.rl.common.gym_wrappers import gym_make, MaxAndSkipEnv, FireResetEnv
-from pl_bolts.models.rl.common.gym_wrappers import ImageToPyTorch, BufferWrapper, ScaledFloatFrame
-
+from torch.utils.data import DataLoader
 
 
 class PLDQN(FixedNetworkPLDQN):
@@ -43,6 +45,14 @@ class PLDQN(FixedNetworkPLDQN):
         self.net = instantiate(self.network, self.obs_shape, self.n_actions)
         self.target_net = instantiate(self.network, self.obs_shape, self.n_actions)
 
+    def _dataloader(self):
+        """Initialize the Replay Buffer dataset used for retrieving experiences."""
+        self.buffer = MultiStepBuffer(self.replay_size, self.n_steps)
+        self.populate(self.warm_start_size)
+
+        self.dataset = ExperienceSourceDataset(self.train_batch)
+        return DataLoader(dataset=self.dataset, batch_size=self.batch_size, num_workers=2)
+
 
 class PLDoubleDQN(DoubleDQN):
     def __init__(
@@ -74,6 +84,14 @@ class PLDoubleDQN(DoubleDQN):
         self.net = instantiate(self.network, self.obs_shape, self.n_actions)
         self.target_net = instantiate(self.network, self.obs_shape, self.n_actions)
 
+    def _dataloader(self):
+        """Initialize the Replay Buffer dataset used for retrieving experiences."""
+        self.buffer = MultiStepBuffer(self.replay_size, self.n_steps)
+        self.populate(self.warm_start_size)
+
+        self.dataset = ExperienceSourceDataset(self.train_batch)
+        return DataLoader(dataset=self.dataset, batch_size=self.batch_size, num_workers=2)
+
 
 class PLDuelingDQN(DuelingDQN):
     def __init__(
@@ -104,6 +122,14 @@ class PLDuelingDQN(DuelingDQN):
     def build_networks(self) -> None:
         self.net = instantiate(self.network, self.obs_shape, self.n_actions)
         self.target_net = instantiate(self.network, self.obs_shape, self.n_actions)
+
+    def _dataloader(self):
+        """Initialize the Replay Buffer dataset used for retrieving experiences."""
+        self.buffer = MultiStepBuffer(self.replay_size, self.n_steps)
+        self.populate(self.warm_start_size)
+
+        self.dataset = ExperienceSourceDataset(self.train_batch)
+        return DataLoader(dataset=self.dataset, batch_size=self.batch_size, num_workers=2)
 
 
 class SyncedTargetNetworkDQN(PLDQN):
@@ -179,8 +205,8 @@ class SyncedTargetNetworkDoubleDQN(PLDoubleDQN):
                 "total_reward": self.total_rewards[-1],
                 "avg_reward": self.avg_rewards,
                 "train_loss": loss,
-                # "episodes": self.done_episodes,
-                # "episode_steps": self.total_episode_steps[-1],
+                "episodes": self.done_episodes,
+                "episode_steps": self.total_episode_steps[-1],
             }
         )
 

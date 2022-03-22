@@ -2,6 +2,7 @@ import gc
 from pathlib import Path
 
 import pytorch_lightning as pl
+import torch
 import wandb
 from gym.wrappers import RecordVideo
 from pl_bolts.models.rl import DQN
@@ -27,3 +28,4 @@ class GC(Callback):
     def on_train_epoch_end(self, trainer: "pl.Trainer", pl_module: DQN, **kwargs) -> None:
         if trainer.current_epoch + 1 % self.clean_every_n_epochs == 0:
             gc.collect()
+            torch.cuda.empty_cache()

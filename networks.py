@@ -1,9 +1,9 @@
 from functools import partial
 from typing import Tuple
 
-from pl_bolts.models.rl.common.networks import CNN as SmallCNN, MLP
+from pl_bolts.models.rl.common.networks import CNN as SmallCNN, MLP, DuelingCNN as SmallDuelingCNN
 from torch import nn
-from pl_bolts.models.rl.common.networks import DuelingCNN as SmallDuelingCNN
+
 
 class MediumCNN(SmallCNN):
     def __init__(self, input_shape: Tuple[int], n_actions: int):
@@ -32,6 +32,7 @@ class MediumCNN(SmallCNN):
             nn.LeakyReLU(),
             nn.Linear(512, n_actions)
         )
+
 
 class LargeCNN(SmallCNN):
     def __init__(self, input_shape: Tuple[int], n_actions: int):
@@ -70,4 +71,52 @@ class LargeCNN(SmallCNN):
 
 SmallMLP = partial(MLP, hidden_size=128)
 MediumMLP = partial(MLP, hidden_size=256)
-LargeMLP = partial(MLP, hidden_size=512)    
+LargeMLP = partial(MLP, hidden_size=512)
+
+
+class MediumDuelingCNN(SmallDuelingCNN):
+    def __init__(self, input_shape: Tuple[int], n_actions: int):
+        super(SmallDuelingCNN, self).__init__()
+
+        self.conv = nn.Sequential(
+            nn.Conv2d(input_shape[0], 64, kernel_size=8, stride=4),
+            nn.ReLU(),
+            nn.Conv2d(64, 128, kernel_size=4, stride=2),
+            nn.ReLU(),
+            nn.Conv2d(128, 128, kernel_size=3, stride=1),
+            nn.ReLU(),
+        )
+
+        conv_out_size = self._get_conv_out(input_shape)
+
+        # advantage head
+        self.head_adv = nn.Sequential(nn.Linear(conv_out_size, 512), nn.ReLU(), nn.Linear(512, n_actions))
+
+        # value head
+        self.head_val = nn.Sequential(nn.Linear(conv_out_size, 512), nn.ReLU(), nn.Linear(512, 1))
+
+
+class LargeDuelingCNN(SmallDuelingCNN):
+    def __init__(self, input_shape: Tuple[int], n_actions: int):
+        super(SmallDuelingCNN, self).__init__()
+
+        self.conv = nn.Sequential(
+            nn.Conv2d(input_shape[0], 64, kernel_size=8, stride=4),
+            nn.ReLU(),
+            nn.Conv2d(64, 128, kernel_size=4, stride=2),
+            nn.ReLU(),
+            nn.Conv2d(128, 128, kernel_size=3, stride=1),
+            nn.ReLU(),
+            nn.Conv2d(128, 128, kernel_size=3, stride=1),
+            nn.ReLU(),
+        )
+
+        conv_out_size = self._get_conv_out(input_shape)
+
+        # advantage head
+        self.head_adv = nn.Sequential(nn.Linear(conv_out_size, 512), nn.ReLU(), nn.Linear(512, 512), nn.ReLU(),
+                                      nn.Linear(512, n_actions))
+
+        # value head
+        self.head_val = nn.Sequential(nn.Linear(conv_out_size, 512), nn.ReLU(), nn.Linear(512, 512), nn.ReLU(),
+                                      nn.Linear(512, 1))

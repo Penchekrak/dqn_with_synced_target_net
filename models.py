@@ -129,7 +129,7 @@ class PLDuelingDQN(DuelingDQN):
         self.populate(self.warm_start_size)
 
         self.dataset = ExperienceSourceDataset(self.train_batch)
-        return DataLoader(dataset=self.dataset, batch_size=self.batch_size, num_workers=2)
+        return DataLoader(dataset=self.dataset, batch_size=self.batch_size)
 
 
 class SyncedTargetNetworkDQN(PLDQN):

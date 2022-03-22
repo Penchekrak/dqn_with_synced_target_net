@@ -51,7 +51,7 @@ class PLDQN(FixedNetworkPLDQN):
         self.populate(self.warm_start_size)
 
         self.dataset = ExperienceSourceDataset(self.train_batch)
-        return DataLoader(dataset=self.dataset, batch_size=self.batch_size, num_workers=2)
+        return DataLoader(dataset=self.dataset, batch_size=self.batch_size)
 
 
 class PLDoubleDQN(DoubleDQN):
@@ -90,7 +90,7 @@ class PLDoubleDQN(DoubleDQN):
         self.populate(self.warm_start_size)
 
         self.dataset = ExperienceSourceDataset(self.train_batch)
-        return DataLoader(dataset=self.dataset, batch_size=self.batch_size, num_workers=2)
+        return DataLoader(dataset=self.dataset, batch_size=self.batch_size)
 
 
 class PLDuelingDQN(DuelingDQN):

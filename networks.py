@@ -52,10 +52,10 @@ class LargeCNN(SmallCNN):
             nn.Conv2d(64, 128, kernel_size=3, stride=1),
             nn.BatchNorm2d(128),
             nn.LeakyReLU(),
-            nn.Conv2d(128, 256, kernel_size=3, stride=1),
+            nn.Conv2d(128, 256, kernel_size=3, padding=1),
             nn.BatchNorm2d(256),
             nn.LeakyReLU(),
-            nn.Conv2d(256, 512, kernel_size=3, stride=1),
+            nn.Conv2d(256, 512, kernel_size=3, padding=1),
             nn.BatchNorm2d(512),
             nn.LeakyReLU(),
         )
@@ -107,7 +107,7 @@ class LargeDuelingCNN(SmallDuelingCNN):
             nn.ReLU(),
             nn.Conv2d(128, 128, kernel_size=3, stride=1),
             nn.ReLU(),
-            nn.Conv2d(128, 128, kernel_size=3, stride=1),
+            nn.Conv2d(128, 128, kernel_size=3, padding=1),
             nn.ReLU(),
         )
 

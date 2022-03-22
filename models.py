@@ -7,7 +7,7 @@ from omegaconf import OmegaConf
 from pl_bolts.datamodules import ExperienceSourceDataset
 from pl_bolts.losses.rl import dqn_loss
 from pl_bolts.models.rl import DQN as FixedNetworkPLDQN
-from pl_bolts.models.rl.common.gym_wrappers import ImageToPyTorch, BufferWrapper, ScaledFloatFrame
+from pl_bolts.models.rl.common.gym_wrappers import BufferWrapper
 from pl_bolts.models.rl.common.gym_wrappers import gym_make, MaxAndSkipEnv, FireResetEnv
 from pl_bolts.models.rl.common.memory import MultiStepBuffer
 from pl_bolts.models.rl.double_dqn_model import DoubleDQN
@@ -265,11 +265,9 @@ class RAMPLDQN(PLDQN):
     @staticmethod
     def make_environment(env_name: str, seed=None):
         env = gym_make(env_name)
-        env = MaxAndSkipEnv(env)
-        env = FireResetEnv(env)
-        env = ImageToPyTorch(env)
-        env = BufferWrapper(env, 4)
-        return ScaledFloatFrame(env)
-
         if seed:
             env.seed(seed)
+        env = MaxAndSkipEnv(env)
+        env = FireResetEnv(env)
+        env = BufferWrapper(env, 4)
+        return env

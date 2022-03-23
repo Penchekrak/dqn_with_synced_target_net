@@ -12,8 +12,6 @@ The main contributions of this work are as follows:
 2. Direct correlation between the neural network size and stability for Q-learning models without target network was observed.
 3. It was shown, that Dueling DQN model without target network can achieve the same performance as original Dueling DQN.
 
-For the detailed information check the presentation "ATARI (Do,DU)DQN" and "ML Course project 2022.pdf" report
-
 basic usage:
 `python3 main.py --config-name pong_dqn_cnn_gpu.yaml`
 

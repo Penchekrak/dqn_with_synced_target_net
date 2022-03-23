@@ -1,5 +1,10 @@
 This project is dedicated to studying the popular model-free reinforcement learning algorithm - Q-learning. Models under investigation such as DQN, Double DQN, and Dueling DQN has an auxiliary network within its architecture to increase stability of training - target network. We conducted several experiments, which shows that replacing target network with action network leads to instability of DQN and Double DQN training. Nevertheless, it can be removed in Dueling DQN model without loss in stability and achieved score.
 
+The main contributions of this work are as follows:
+1. For DQN and Double DQN models the necessity of target network was proven.
+2. Direct correlation between the neural network size and stability for Q-learning models without target network was observed.
+3. It was shown, that Dueling DQN model without target network can achieve the same performance as original Dueling DQN.
+
 For the detailed information check the presentation "ATARI (Do,DU)DQN" and "ML Course project 2022.pdf" report
 
 basic usage:

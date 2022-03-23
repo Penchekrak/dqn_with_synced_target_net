@@ -15,7 +15,7 @@ The main contributions of this work are as follows:
 basic usage:
 `python3 main.py --config-name pong_dqn_cnn_gpu.yaml`
 
-jupyter notebook with and example of run: `example_of_run.ipynb` and 'dqn.ipynb'
+jupyter notebook with and example of run: `example_of_run.ipynb`
 
 config structure:
 
